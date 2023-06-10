@@ -10,13 +10,21 @@ namespace TheMonkeMenu.Menu.Mods.Platforms
     public class PlatformObject : MonoBehaviour
     {
         public bool isUnEquipped = false;
+        bool hasInvokedSelfDeath = false;
 
         void FixedUpdate()
         {
             if(isUnEquipped)
             {
-                transform.localScale -= new Vector3(0.025f, 0.025f, 0.025f);
+                if (!hasInvokedSelfDeath) Invoke("SelfDeath", 10f);
+                transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f) * Time.fixedDeltaTime;
+                if (transform.localScale.x < 0) GameObject.Destroy(gameObject);
             }
+        }
+
+        void SelfDeath()
+        {
+            GameObject.Destroy(gameObject);
         }
 
         void OnCollisionEnter(Collision collision)
