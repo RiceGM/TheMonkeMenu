@@ -2,11 +2,11 @@
 
 not done yet (legal gorilla tag menu)
 
-#todo
+# todo
 1. cosmetic netwroking for custom cosmetics
 2. the actual menu
 3. custom models
 
-#done
+# done
 1. mod saving (using bepinex config)
 2. harmony patch
