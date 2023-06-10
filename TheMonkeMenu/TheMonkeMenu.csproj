@@ -331,6 +331,7 @@
   <ItemGroup>
     <Compile Include="Menu\CosmeticNetworker.cs" />
     <Compile Include="Menu\MainMenu.cs" />
+    <Compile Include="Menu\Patches\TeleportPatch.cs" />
     <Compile Include="MonkePatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

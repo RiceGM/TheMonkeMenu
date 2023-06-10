@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TheMonkeMenu.Menu.Mods;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 using UnityEngine.XR;
@@ -34,7 +35,10 @@ namespace TheMonkeMenu.Menu
         {
             Debug.Log("Initializing Menu...");
 
-            menu = new GameObject("MonkeModMenu");
+            menu = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            menu.name = "MonkeMenu";
+
+            gameObject.AddComponent<ModHelper>();
 
             Debug.Log("Initializing AssetBundles...");
 
@@ -43,6 +47,8 @@ namespace TheMonkeMenu.Menu
             platform.name = "Platform";
             platformsBundle.Unload(false);
 
+            Debug.Log("Changing Scales...");
+            platform.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
             Debug.Log("Loading Textures...");
             forestAtlas = GameObject.Find("Level/forest/ForestObjects/bridge").GetComponent<MeshRenderer>().sharedMaterials[0].mainTexture;
 
@@ -101,23 +107,7 @@ namespace TheMonkeMenu.Menu
 
         void GetMenuInputs()
         {
-            // fuck off error >:(
-            // whgere is error :(((
-            // https://github.com/RiceGM/TheMonkeMenu/assets/122515661/0c1f0328-5818-47e3-a99f-eca45f91e46c
-            // evil
-            List<InputDevice> leftList = new List<InputDevice>();
-            List<InputDevice> rightList = new List<InputDevice>();
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller, leftList);
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller, rightList);
-            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.gripButton, out leftGrip);
-            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.triggerButton, out leftTrigger);
-            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.primaryButton, out yBtn);
-            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.secondaryButton, out xBtn);
-
-            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.triggerButton, out rightTrigger);
-            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.gripButton, out rightGrip);
-            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.primaryButton, out bBtn);
-            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.secondaryButton, out aBtn);
+            // gone
         }
 
         bool CanGrabMenu()
