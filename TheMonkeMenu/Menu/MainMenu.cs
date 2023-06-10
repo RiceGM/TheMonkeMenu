@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TheMonkeMenu.Menu.Mods;
+using TheMonkeMenu.Menu.Mods.Platforms;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 using UnityEngine.XR;
@@ -49,6 +50,8 @@ namespace TheMonkeMenu.Menu
             AssetBundle platformsBundle = AssetBundle.LoadFromStream(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("TheMonkeMenu.Resources.Mods.platformsab"));
             platform = Instantiate(platformsBundle.LoadAsset<GameObject>("PlatformsGO"));
             platform.name = "Platform";
+            platform.AddComponent<Rigidbody>().isKinematic = true;
+            platform.AddComponent<PlatformObject>();
             platformsBundle.Unload(false);
 
             Debug.Log("Changing Scales...");

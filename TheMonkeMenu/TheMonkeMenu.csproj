@@ -333,7 +333,8 @@
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Menu\Mods\ModHelper.cs" />
     <Compile Include="Menu\Mods\MonkeMod.cs" />
-    <Compile Include="Menu\Mods\Platforms.cs" />
+    <Compile Include="Menu\Mods\Platforms\PlatformObject.cs" />
+    <Compile Include="Menu\Mods\Platforms\Platforms.cs" />
     <Compile Include="MonkePatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

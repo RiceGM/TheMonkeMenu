@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TheMonkeMenu.Menu.Mods
+namespace TheMonkeMenu.Menu.Mods.Platforms
 {
     public class Platforms : MonkeMod
     {
@@ -23,7 +23,9 @@ namespace TheMonkeMenu.Menu.Mods
                 leftPlatform.transform.rotation = GorillaLocomotion.Player.Instance.leftHandTransform.transform.rotation;
             } else if(!ModHelper.instance.leftGrip && leftPlatform)
             {
-                GameObject.Destroy(leftPlatform);
+                leftPlatform.GetComponent<Rigidbody>().isKinematic = false;
+                leftPlatform.GetComponent<PlatformObject>().isUnEquipped = true;
+                leftPlatform = null;
             }
 
             // right platform (copy paste from left)
@@ -35,7 +37,9 @@ namespace TheMonkeMenu.Menu.Mods
             }
             else if (!ModHelper.instance.rightGrip && rightPlatform)
             {
-                GameObject.Destroy(rightPlatform);
+                rightPlatform.GetComponent<Rigidbody>().isKinematic = false;
+                rightPlatform.GetComponent<PlatformObject>().isUnEquipped = true;
+                rightPlatform = null;
             }
         }
     }
