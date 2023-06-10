@@ -104,6 +104,7 @@ namespace TheMonkeMenu.Menu
             // fuck off error >:(
             // whgere is error :(((
             // https://github.com/RiceGM/TheMonkeMenu/assets/122515661/0c1f0328-5818-47e3-a99f-eca45f91e46c
+            // evil
             List<InputDevice> leftList = new List<InputDevice>();
             List<InputDevice> rightList = new List<InputDevice>();
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller, leftList);
