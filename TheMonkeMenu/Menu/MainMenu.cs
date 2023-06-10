@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
@@ -21,18 +22,54 @@ namespace TheMonkeMenu.Menu
         bool aBtn, bBtn, xBtn, yBtn;
         bool leftTrigger, rightTrigger, leftGrip, rightGrip;
 
+        bool closingAnimation;
+        GameObject menu;
+
         public void InitializeMenu()
         {
             Debug.Log("Initializing Menu...");
+            menu = new GameObject("MonkeModMenu");
         }
 
         public void Update()
         {
             GetMenuInputs();
 
-            if(rightGrip && CanGrabMenu())
+            if(rightGrip && CanGrabMenu() && !menu.activeInHierarchy)
             {
+                menu.SetActive(true);
+                StartCoroutine(MenuPopInAnimation(true));
+            }
 
+            if(!rightGrip && !closingAnimation && menu.activeInHierarchy)
+            {
+                StartCoroutine(MenuPopInAnimation(false));
+            }
+        }
+
+        IEnumerator MenuPopInAnimation(bool open)
+        {
+            menu.SetActive(true);
+
+            if (!open) // menu is closing
+            {
+                closingAnimation = true;
+                for (int i = 100; i > 0; i--)
+                {
+                    menu.transform.localScale = new Vector3(i / 100, i / 100, i / 100);
+                    yield return new WaitForEndOfFrame();
+                }
+
+                menu.SetActive(false);
+                closingAnimation = false;
+            } else
+            {
+                menu.transform.localScale = new Vector3(0, 0, 0);
+                for (int i = 0; i < 100; i++)
+                {
+                    menu.transform.localScale = new Vector3(i / 100, i / 100, i / 100);
+                    yield return new WaitForEndOfFrame();
+                }
             }
         }
 
