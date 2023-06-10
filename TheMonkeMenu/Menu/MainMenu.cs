@@ -20,9 +20,6 @@ namespace TheMonkeMenu.Menu
             "Platforms"
         };
 
-        bool aBtn, bBtn, xBtn, yBtn;
-        bool leftTrigger, rightTrigger, leftGrip, rightGrip;
-
         bool closingAnimation;
         GameObject menu;
         GameObject platform;
@@ -60,20 +57,19 @@ namespace TheMonkeMenu.Menu
 
         public void Update()
         {
-            GetMenuInputs();
             MenuClosingChecks();
         }
 
         void MenuClosingChecks()
         {
             if(!initialized) return;
-            if (rightGrip && CanGrabMenu() && !menu.activeInHierarchy)
+            if (ModHelper.instance.rightGrip && CanGrabMenu() && !menu.activeInHierarchy)
             {
                 menu.SetActive(true);
                 StartCoroutine(MenuPopInAnimation(true));
             }
 
-            if (!rightGrip && !closingAnimation && menu.activeInHierarchy)
+            if (!ModHelper.instance.rightGrip && !closingAnimation && menu.activeInHierarchy)
             {
                 StartCoroutine(MenuPopInAnimation(false));
             }
@@ -103,11 +99,6 @@ namespace TheMonkeMenu.Menu
                     yield return new WaitForEndOfFrame();
                 }
             }
-        }
-
-        void GetMenuInputs()
-        {
-            // gone
         }
 
         bool CanGrabMenu()
