@@ -10,6 +10,7 @@ namespace TheMonkeMenu.Menu
 {
     public class MainMenu : MonoBehaviourPunCallbacks
     {
+        public static MainMenu instance;
         public MonkePatcher monkePatcher;
 
         public bool[] modsEnabled;
@@ -22,11 +23,16 @@ namespace TheMonkeMenu.Menu
 
         bool closingAnimation;
         GameObject menu;
-        GameObject platform;
+        public GameObject platform;
         bool canUseMenu = false;
         bool initialized = false;
 
         Texture forestAtlas;
+
+        void Start()
+        {
+            instance = this;
+        }
 
         public void InitializeMenu()
         {
@@ -36,6 +42,7 @@ namespace TheMonkeMenu.Menu
             menu.name = "MonkeMenu";
 
             gameObject.AddComponent<ModHelper>();
+            gameObject.AddComponent<Platforms>().modEnabled = true;
 
             Debug.Log("Initializing AssetBundles...");
 
