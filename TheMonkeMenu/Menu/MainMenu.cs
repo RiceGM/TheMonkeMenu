@@ -101,19 +101,22 @@ namespace TheMonkeMenu.Menu
 
         void GetMenuInputs()
         {
+            // fuck off error >:(
+            // whgere is error :(((
+            // https://github.com/RiceGM/TheMonkeMenu/assets/122515661/0c1f0328-5818-47e3-a99f-eca45f91e46c
             List<InputDevice> leftList = new List<InputDevice>();
             List<InputDevice> rightList = new List<InputDevice>();
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller, leftList);
             InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller, rightList);
-            leftList[0].TryGetFeatureValue(CommonUsages.gripButton, out leftGrip);
-            leftList[0].TryGetFeatureValue(CommonUsages.triggerButton, out leftTrigger);
-            leftList[0].TryGetFeatureValue(CommonUsages.primaryButton, out yBtn);
-            leftList[0].TryGetFeatureValue(CommonUsages.secondaryButton, out xBtn);
+            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.gripButton, out leftGrip);
+            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.triggerButton, out leftTrigger);
+            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.primaryButton, out yBtn);
+            if(leftList[0]!= null) leftList[0].TryGetFeatureValue(CommonUsages.secondaryButton, out xBtn);
 
-            rightList[0].TryGetFeatureValue(CommonUsages.triggerButton, out rightTrigger);
-            rightList[0].TryGetFeatureValue(CommonUsages.gripButton, out rightGrip);
-            rightList[0].TryGetFeatureValue(CommonUsages.primaryButton, out bBtn);
-            rightList[0].TryGetFeatureValue(CommonUsages.secondaryButton, out aBtn);
+            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.triggerButton, out rightTrigger);
+            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.gripButton, out rightGrip);
+            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.primaryButton, out bBtn);
+            if(rightList[0] != null) rightList[0].TryGetFeatureValue(CommonUsages.secondaryButton, out aBtn);
         }
 
         bool CanGrabMenu()
