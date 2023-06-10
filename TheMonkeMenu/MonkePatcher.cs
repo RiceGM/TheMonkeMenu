@@ -35,6 +35,7 @@ namespace TheMonkeMenu
                 mainMenu = new GameObject("MonkeMenu");
                 GameObject.DontDestroyOnLoad(mainMenu);
                 mainMenuLocal = mainMenu.AddComponent<MainMenu>();
+                mainMenuLocal.modsEnabled = new bool[mainMenuLocal.monkeMods.Length];
                 mainMenuLocal.monkePatcher = this;
 
                 mainMenuLocal.modsEnabled[0] = Config.Bind("EnabledMods", "Fly", false, "Is the Fly mod enabled?").Value;

@@ -337,7 +337,9 @@
   <ItemGroup>
     <Folder Include="Resources\Cosmetics\" />
     <Folder Include="Resources\Menu\" />
-    <Folder Include="Resources\Mods\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Mods\platformsab" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
