@@ -56,7 +56,7 @@ namespace TheMonkeMenu.Menu
             platformModel.name = "Platform";
             platformModel.AddComponent<PlatformObject>();
             platformModel.transform.parent = platform.transform;
-            platformModel.transform.eulerAngles = new Vector3(90, 0, 0);
+            platformModel.transform.eulerAngles = new Vector3(0, 0, 0);
             platformsBundle.Unload(false);
             
             Debug.Log("Changing Scales...");

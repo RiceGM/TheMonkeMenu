@@ -16,7 +16,11 @@ namespace TheMonkeMenu.Menu.Mods.Platforms
         {
             if(isUnEquipped)
             {
-                if (!hasInvokedSelfDeath) Invoke("SelfDeath", 10f);
+                if (!hasInvokedSelfDeath)
+                {
+                    hasInvokedSelfDeath = true;
+                    Invoke("SelfDeath", 10f);
+                }
                 transform.localScale -= new Vector3(0.15f, 0.15f, 0.15f) * Time.fixedDeltaTime * 5f;
                 if (transform.localScale.x < 0) GameObject.Destroy(gameObject);
             }
