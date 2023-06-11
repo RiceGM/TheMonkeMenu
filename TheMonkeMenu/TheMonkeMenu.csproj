@@ -329,7 +329,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Menu\CosmeticNetworker.cs" />
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Menu\Mods\ModHelper.cs" />
     <Compile Include="Menu\Mods\MonkeMod.cs" />

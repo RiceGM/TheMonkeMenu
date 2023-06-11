@@ -20,10 +20,10 @@ namespace TheMonkeMenu.Menu.Mods.Platforms
             {
                 leftPlatform = GameObject.Instantiate(MainMenu.instance.platform);
                 leftPlatform.transform.position = GorillaLocomotion.Player.Instance.leftHandFollower.transform.position;
-                leftPlatform.transform.rotation = GorillaLocomotion.Player.Instance.leftHandTransform.transform.rotation;
+                leftPlatform.transform.eulerAngles = GorillaLocomotion.Player.Instance.leftHandTransform.transform.eulerAngles;
             } else if(!ModHelper.instance.leftGrip && leftPlatform)
             {
-                leftPlatform.GetComponent<Rigidbody>().isKinematic = false;
+                leftPlatform.GetComponent<BoxCollider>().enabled = false;
                 leftPlatform.GetComponent<PlatformObject>().isUnEquipped = true;
                 leftPlatform = null;
             }
@@ -33,11 +33,11 @@ namespace TheMonkeMenu.Menu.Mods.Platforms
             {
                 rightPlatform = GameObject.Instantiate(MainMenu.instance.platform);
                 rightPlatform.transform.position = GorillaLocomotion.Player.Instance.rightHandFollower.transform.position;
-                rightPlatform.transform.rotation = GorillaLocomotion.Player.Instance.rightHandTransform.transform.rotation;
+                rightPlatform.transform.eulerAngles = GorillaLocomotion.Player.Instance.rightHandTransform.transform.eulerAngles;
             }
             else if (!ModHelper.instance.rightGrip && rightPlatform)
             {
-                rightPlatform.GetComponent<Rigidbody>().isKinematic = false;
+                rightPlatform.GetComponent<BoxCollider>().enabled = false;
                 rightPlatform.GetComponent<PlatformObject>().isUnEquipped = true;
                 rightPlatform = null;
             }

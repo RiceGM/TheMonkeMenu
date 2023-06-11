@@ -25,9 +25,10 @@ namespace TheMonkeMenu.Menu
         bool closingAnimation;
         GameObject menu;
         public GameObject platform;
+        public GameObject platformModel;
         bool canUseMenu = false;
         bool initialized = false;
-
+        float menuAnimationSpeed = 5f;
         Texture forestAtlas;
 
         void Start()
@@ -40,81 +41,56 @@ namespace TheMonkeMenu.Menu
             Debug.Log("Initializing Menu...");
 
             menu = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject.Destroy(menu.GetComponent<Rigidbody>());
+            GameObject.Destroy(menu.GetComponent<BoxCollider>());
+            platform = new GameObject("ActualPlatform");
             menu.name = "MonkeMenu";
 
             gameObject.AddComponent<ModHelper>();
-            gameObject.AddComponent<Platforms>().modEnabled = true;
+            gameObject.AddComponent<Platforms>().modEnabled = modsEnabled[2];
 
             Debug.Log("Initializing AssetBundles...");
 
             AssetBundle platformsBundle = AssetBundle.LoadFromStream(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("TheMonkeMenu.Resources.Mods.platformsab"));
-            platform = Instantiate(platformsBundle.LoadAsset<GameObject>("PlatformsGO"));
-            platform.name = "Platform";
-            platform.AddComponent<Rigidbody>().isKinematic = true;
-            platform.AddComponent<PlatformObject>();
+            platformModel = Instantiate(platformsBundle.LoadAsset<GameObject>("PlatformsGO"));
+            platformModel.name = "Platform";
+            platformModel.AddComponent<PlatformObject>();
+            platformModel.transform.parent = platform.transform;
+            platformModel.transform.eulerAngles = new Vector3(90, 0, 0);
             platformsBundle.Unload(false);
-
+            
             Debug.Log("Changing Scales...");
-            platform.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+            platformModel.transform.localScale = new Vector3(0.1f, 0.1f, 0.2f);
             Debug.Log("Loading Textures...");
             forestAtlas = GameObject.Find("Level/forest/ForestObjects/bridge").GetComponent<MeshRenderer>().sharedMaterials[0].mainTexture;
 
             Debug.Log("Setting Textures...");
-            platform.GetComponent<MeshRenderer>().material = new Material(GorillaTagger.Instance.offlineVRRig.mainSkin.sharedMaterials[0].shader);
-            platform.GetComponent<MeshRenderer>().material.mainTexture = forestAtlas;
+            platformModel.GetComponent<MeshRenderer>().material = new Material(GorillaTagger.Instance.offlineVRRig.mainSkin.sharedMaterials[0].shader);
+            platformModel.GetComponent<MeshRenderer>().material.mainTexture = forestAtlas;
+
             initialized = true;
         }
 
         public void Update()
         {
-            MenuClosingChecks();
-        }
-
-        void MenuClosingChecks()
-        {
-            if(!initialized) return;
-            if (ModHelper.instance.rightGrip && CanGrabMenu() && !menu.activeInHierarchy)
+            if (ModHelper.instance.rightGrip)
             {
                 menu.SetActive(true);
-                StartCoroutine(MenuPopInAnimation(true));
-            }
-
-            if (!ModHelper.instance.rightGrip && !closingAnimation && menu.activeInHierarchy)
-            {
-                StartCoroutine(MenuPopInAnimation(false));
-            }
-        }
-
-        IEnumerator MenuPopInAnimation(bool open)
-        {
-            menu.SetActive(true);
-
-            if (!open) // menu is closing
-            {
-                closingAnimation = true;
-                for (int i = 100; i > 0; i--)
+                if(menu.transform.localScale.x < 1)
                 {
-                    menu.transform.localScale = new Vector3(i / 100, i / 100, i / 100);
-                    yield return new WaitForEndOfFrame();
+                    menu.transform.localScale += new Vector3(0.5f, 0.5f, 0.5f) * Time.fixedDeltaTime * menuAnimationSpeed;
                 }
-
-                menu.SetActive(false);
-                closingAnimation = false;
+                menu.transform.position = GorillaLocomotion.Player.Instance.rightHandTransform.position;
             } else
             {
-                menu.transform.localScale = new Vector3(0, 0, 0);
-                for (int i = 0; i < 100; i++)
+                if (menu.transform.localScale.x > 0)
                 {
-                    menu.transform.localScale = new Vector3(i / 100, i / 100, i / 100);
-                    yield return new WaitForEndOfFrame();
+                    menu.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f) * Time.fixedDeltaTime * menuAnimationSpeed;
+                } else
+                {
+                    menu.SetActive(false);
                 }
             }
-        }
-
-        bool CanGrabMenu()
-        {
-            float dot = Vector3.Dot(GorillaLocomotion.Player.Instance.rightHandTransform.position - GorillaLocomotion.Player.Instance.transform.position, GorillaLocomotion.Player.Instance.transform.forward);
-            return dot < -0.1f;
         }
     }
 }
