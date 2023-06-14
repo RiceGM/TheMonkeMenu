@@ -10,15 +10,30 @@ using System.Threading.Tasks;
 using TheMonkeMenu.Menu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilla;
 
 namespace TheMonkeMenu
 {
     [BepInPlugin("org.ricegm.thatmonkemenu", "ThatMonkeMenu", "1.0.0")]
+    [BepInDependency("")]
+    [ModdedGamemode]
     public class MonkePatcher : BaseUnityPlugin
     {
         GameObject mainMenu;
         MainMenu mainMenuLocal;
         Harmony harmony;
+
+        [ModdedGamemodeJoin]
+        void JoinModded()
+        {
+            mainMenuLocal.isInModded = true;
+        }
+
+        [ModdedGamemodeLeave]
+        void LeaveModded()
+        {
+            mainMenuLocal.isInModded = false;
+        }
 
         void OnEnable()
         {
@@ -38,9 +53,8 @@ namespace TheMonkeMenu
                 mainMenuLocal.modsEnabled = new bool[mainMenuLocal.monkeMods.Length];
                 mainMenuLocal.monkePatcher = this;
 
-                mainMenuLocal.modsEnabled[0] = Config.Bind("EnabledMods", "Fly", false, "Is the Fly mod enabled?").Value;
-                mainMenuLocal.modsEnabled[1] = Config.Bind("EnabledMods", "NoClip", false, "Is the NoClip mod enabled?").Value;
-                mainMenuLocal.modsEnabled[2] = Config.Bind("EnabledMods", "Platforms", false, "Is the Platforms mod enabled?").Value;
+                mainMenuLocal.modsEnabled[0] = Config.Bind("EnabledMods", "Pen", false, "Is the Pen mod enabled?").Value;
+                mainMenuLocal.modsEnabled[1] = Config.Bind("EnabledMods", "Platforms", false, "Is the Platforms mod enabled?").Value;
 
                 mainMenuLocal.InitializeMenu();
             }

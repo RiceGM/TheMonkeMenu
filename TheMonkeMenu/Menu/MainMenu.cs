@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TheMonkeMenu.Menu.Mods;
+using TheMonkeMenu.Menu.Mods.Pen;
 using TheMonkeMenu.Menu.Mods.Platforms;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements.Experimental;
 using UnityEngine.XR;
 
@@ -13,23 +15,26 @@ namespace TheMonkeMenu.Menu
     {
         public static MainMenu instance;
         public MonkePatcher monkePatcher;
+        public bool isInModded;
 
         public bool[] modsEnabled;
         public string[] monkeMods = new string[]
         {
-            "Fly",
-            "NoClip",
+            "Pen",
             "Platforms"
         };
 
         bool closingAnimation;
         GameObject menu;
-        public GameObject platform;
-        public GameObject platformModel;
+        public GameObject platform, pen;
+        public GameObject platformModel, penModel;
+
         bool canUseMenu = false;
         bool initialized = false;
         float menuAnimationSpeed = 5f;
         Texture forestAtlas;
+
+        GameObject monkeBundle;
 
         void Start()
         {
@@ -44,23 +49,16 @@ namespace TheMonkeMenu.Menu
             GameObject.Destroy(menu.GetComponent<Rigidbody>());
             GameObject.Destroy(menu.GetComponent<BoxCollider>());
             platform = new GameObject("ActualPlatform");
+            pen = new GameObject("ActualPen");
             menu.name = "MonkeMenu";
-
-            gameObject.AddComponent<ModHelper>();
-            gameObject.AddComponent<Platforms>().modEnabled = modsEnabled[2];
 
             Debug.Log("Initializing AssetBundles...");
 
-            AssetBundle platformsBundle = AssetBundle.LoadFromStream(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("TheMonkeMenu.Resources.Mods.platformsab"));
-            platformModel = Instantiate(platformsBundle.LoadAsset<GameObject>("PlatformsGO"));
-            platformModel.name = "Platform";
-            platformModel.AddComponent<PlatformObject>();
-            platformModel.transform.parent = platform.transform;
-            platformModel.transform.eulerAngles = new Vector3(0, 0, 0);
-            platformsBundle.Unload(false);
+            InitializeBundles();
             
             Debug.Log("Changing Scales...");
             platformModel.transform.localScale = new Vector3(0.1f, 0.1f, 0.2f);
+            penModel.transform.localScale = new Vector3(25f, 25f, 25f);
             Debug.Log("Loading Textures...");
             forestAtlas = GameObject.Find("Level/forest/ForestObjects/bridge").GetComponent<MeshRenderer>().sharedMaterials[0].mainTexture;
 
@@ -68,11 +66,41 @@ namespace TheMonkeMenu.Menu
             platformModel.GetComponent<MeshRenderer>().material = new Material(GorillaTagger.Instance.offlineVRRig.mainSkin.sharedMaterials[0].shader);
             platformModel.GetComponent<MeshRenderer>().material.mainTexture = forestAtlas;
 
+            penModel.GetComponent<MeshRenderer>().material = new Material(GorillaTagger.Instance.offlineVRRig.mainSkin.sharedMaterials[0].shader);
+            penModel.GetComponent<MeshRenderer>().material.mainTexture = forestAtlas;
+
+            Debug.Log("Setting Transforms...");
+            platformModel.transform.parent = platform.transform;
+            penModel.transform.parent = pen.transform;
+
+            platformModel.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
+            Debug.Log("Initializing Mods...");
+            gameObject.AddComponent<ModHelper>();
+            penModel.transform.GetChild(0).gameObject.AddComponent<Mods.Pen.Pen>().modEnabled = modsEnabled[0];
+            gameObject.AddComponent<Platforms>().modEnabled = modsEnabled[1];
+
+            Debug.Log("Adding Scripts to Objects...");
+
+            platformModel.AddComponent<PlatformObject>().isMaster = true;
+
             initialized = true;
+        }
+
+        void InitializeBundles()
+        {
+            AssetBundle monkeBundleAB = AssetBundle.LoadFromStream(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("TheMonkeMenu.Resources.Mods.monkebundle"));
+            monkeBundle = Instantiate(monkeBundleAB.LoadAsset<GameObject>("MonkeBundle"));
+
+            penModel = monkeBundle.transform.GetChild(0).gameObject;
+            platformModel = monkeBundle.transform.GetChild(1).gameObject;
+
+            monkeBundleAB.Unload(false);
         }
 
         public void Update()
         {
+            return;
             if (ModHelper.instance.rightGrip)
             {
                 menu.SetActive(true);

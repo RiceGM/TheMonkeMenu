@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TheMonkeMenu.Menu.Mods
+namespace TheMonkeMenu.Menu.Mods.Pen
 {
-    public class MonkeMod : MonoBehaviour
+    public class Pen : MonkeMod
     {
-        public bool modEnabled;
-        public bool forceEnable;
+
     }
 }

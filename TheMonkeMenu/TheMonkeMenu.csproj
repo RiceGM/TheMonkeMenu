@@ -332,6 +332,7 @@
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Menu\Mods\ModHelper.cs" />
     <Compile Include="Menu\Mods\MonkeMod.cs" />
+    <Compile Include="Menu\Mods\Pen\Pen.cs" />
     <Compile Include="Menu\Mods\Platforms\PlatformObject.cs" />
     <Compile Include="Menu\Mods\Platforms\Platforms.cs" />
     <Compile Include="MonkePatcher.cs" />
@@ -342,7 +343,7 @@
     <Folder Include="Resources\Menu\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Mods\platformsab" />
+    <EmbeddedResource Include="Resources\Mods\monkebundle" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
